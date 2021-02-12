@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChartGroup, LineChart, PieChart, TableChart } from 'nr1';
+import { ChartGroup, Grid, GridItem, LineChart, PieChart, TableChart } from 'nr1';
 
 class NewsletterSignups extends React.Component {
     render() {
@@ -191,19 +191,49 @@ class VersionBResponseTimes extends React.Component {
     }
 }
 
-export default class AbTestNerdletNerdlet extends React.Component {
+class HistoricalTests extends React.Component {
     render() {
-        return <React.Fragment>
-            <NewsletterSignups />
-            <TestDistributions />
-            <SuccessfulRequests />
-            <VersionATotals />
-            <VersionBTotals />
-            <ChartGroup>
-                <VersionAResponseTimes />
-                <VersionBResponseTimes />
-            </ChartGroup>
-        </React.Fragment>;
+        var historicalData = {
+            metadata: {
+                id: 'totals-B',
+                name: 'Version B',
+                columns: ['endDate', 'versionADescription', 'versionBDescription', 'winner'],
+            },
+            data: [
+                {
+                    "endDate": "12/15/2020",
+                    "versionADescription": "The homepage's CTA button was green.",
+                    "versionBDescription": "The homepage's CTA button was blue.",
+                    "winner": "A"
+                },
+                {
+                    "endDate": "09/06/2019",
+                    "versionADescription": "The 'Deals' page showed sales in a carousel.",
+                    "versionBDescription": "The 'Deals' page showed sales in a grid.",
+                    "winner": "B"
+                }
+            ],
+        }
+
+        return <TableChart data={[historicalData]} fullWidth />
     }
 }
 
+export default class AbTestNerdletNerdlet extends React.Component {
+    render() {
+        return (
+            <Grid>
+                <GridItem columnSpan={12}><NewsletterSignups /></GridItem>
+                <GridItem columnSpan={6}><TestDistributions /></GridItem>
+                <GridItem columnSpan={6}><SuccessfulRequests /></GridItem>
+                <GridItem columnSpan={6}><VersionATotals /></GridItem>
+                <GridItem columnSpan={6}><VersionBTotals /></GridItem>
+                <ChartGroup>
+                    <GridItem columnSpan={6}><VersionAResponseTimes /></GridItem>
+                    <GridItem columnSpan={6}><VersionBResponseTimes /></GridItem>
+                </ChartGroup>
+                <GridItem columnSpan={12}><HistoricalTests /></GridItem>
+            </Grid>
+        )
+    }
+}

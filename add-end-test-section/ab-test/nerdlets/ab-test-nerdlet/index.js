@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChartGroup, LineChart, PieChart, TableChart } from 'nr1';
+import { ChartGroup, Grid, GridItem, HeadingText, LineChart, PieChart, TableChart } from 'nr1';
 
 class NewsletterSignups extends React.Component {
     render() {
@@ -35,7 +35,12 @@ class NewsletterSignups extends React.Component {
                 { x: 50, y: 35 },
             ],
         }
-        return <LineChart data={[versionASignups, versionBSignups]} fullWidth />
+        return <React.Fragment>
+            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+                Newsletter subscriptions per version
+            </HeadingText>
+            <LineChart data={[versionASignups, versionBSignups]} fullWidth />
+        </React.Fragment>
     }
 }
 
@@ -63,7 +68,12 @@ class TestDistributions extends React.Component {
                 { y: 318 },
             ],
         }
-        return <PieChart data={[distributionA, distributionB]} fullWidth />
+        return <React.Fragment>
+            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+                Total users per version
+            </HeadingText>
+            <PieChart data={[distributionA, distributionB]} fullWidth />
+        </React.Fragment>
     }
 }
 
@@ -91,7 +101,12 @@ class SuccessfulRequests extends React.Component {
                 { y: 400 },
             ],
         }
-        return <PieChart data={[successesA, successesB]} fullWidth />
+        return <React.Fragment>
+            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+                Total subscriptions per version
+            </HeadingText>
+            <PieChart data={[successesA, successesB]} fullWidth />
+        </React.Fragment>
     }
 }
 
@@ -114,7 +129,12 @@ class VersionATotals extends React.Component {
                 },
             ],
         }
-        return <TableChart data={[versionATotals]} fullWidth />
+        return <React.Fragment>
+            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+                Version A - requests
+            </HeadingText>
+            <TableChart data={[versionATotals]} fullWidth />
+        </React.Fragment>
     }
 }
 
@@ -137,7 +157,12 @@ class VersionBTotals extends React.Component {
                 },
             ],
         }
-        return <TableChart data={[versionBTotals]} fullWidth />
+        return <React.Fragment>
+            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+                Version B - requests
+            </HeadingText>
+            <TableChart data={[versionBTotals]} fullWidth />
+        </React.Fragment>
     }
 }
 
@@ -162,7 +187,12 @@ class VersionAResponseTimes extends React.Component {
                 { x: 50, y: 9 },
             ],
         }
-        return <LineChart data={[versionAResponseTimes]} fullWidth />
+        return <React.Fragment>
+            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+                Version A - response times
+            </HeadingText>
+            <LineChart data={[versionAResponseTimes]} fullWidth />
+        </React.Fragment>
     }
 }
 
@@ -187,23 +217,63 @@ class VersionBResponseTimes extends React.Component {
                 { x: 50, y: 13.5 },
             ],
         }
-        return <LineChart data={[versionBResponseTimes]} fullWidth />
+        return <React.Fragment>
+            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+                Version B - response times
+            </HeadingText>
+            <LineChart data={[versionBResponseTimes]} fullWidth />
+        </React.Fragment>
+    }
+}
+
+class HistoricalTests extends React.Component {
+    render() {
+        var historicalData = {
+            metadata: {
+                id: 'totals-B',
+                name: 'Version B',
+                columns: ['endDate', 'versionADescription', 'versionBDescription', 'winner'],
+            },
+            data: [
+                {
+                    "endDate": "12/15/2020",
+                    "versionADescription": "The homepage's CTA button was green.",
+                    "versionBDescription": "The homepage's CTA button was blue.",
+                    "winner": "A"
+                },
+                {
+                    "endDate": "09/06/2019",
+                    "versionADescription": "The 'Deals' page showed sales in a carousel.",
+                    "versionBDescription": "The 'Deals' page showed sales in a grid.",
+                    "winner": "B"
+                }
+            ],
+        }
+
+        return <React.Fragment>
+            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+                Past tests
+            </HeadingText>
+            <TableChart data={[historicalData]} fullWidth />
+        </React.Fragment>
     }
 }
 
 export default class AbTestNerdletNerdlet extends React.Component {
     render() {
-        return <React.Fragment>
-            <NewsletterSignups />
-            <TestDistributions />
-            <SuccessfulRequests />
-            <VersionATotals />
-            <VersionBTotals />
-            <ChartGroup>
-                <VersionAResponseTimes />
-                <VersionBResponseTimes />
-            </ChartGroup>
-        </React.Fragment>;
+        return (
+            <Grid>
+                <GridItem columnSpan={12}><NewsletterSignups /></GridItem>
+                <GridItem columnSpan={6}><TestDistributions /></GridItem>
+                <GridItem columnSpan={6}><SuccessfulRequests /></GridItem>
+                <GridItem columnSpan={6}><VersionATotals /></GridItem>
+                <GridItem columnSpan={6}><VersionBTotals /></GridItem>
+                <ChartGroup>
+                    <GridItem columnSpan={6}><VersionAResponseTimes /></GridItem>
+                    <GridItem columnSpan={6}><VersionBResponseTimes /></GridItem>
+                </ChartGroup>
+                <GridItem columnSpan={12}><HistoricalTests /></GridItem>
+            </Grid>
+        )
     }
 }
-
