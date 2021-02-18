@@ -131,7 +131,7 @@ class VersionATotals extends React.Component {
         }
         return <React.Fragment>
             <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
-                Version A - requests
+                Version A - Unsubscriptions
             </HeadingText>
             <TableChart data={[versionATotals]} fullWidth />
         </React.Fragment>
@@ -159,7 +159,7 @@ class VersionBTotals extends React.Component {
         }
         return <React.Fragment>
             <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
-                Version B - requests
+                Version B - Unsubscriptions
             </HeadingText>
             <TableChart data={[versionBTotals]} fullWidth />
         </React.Fragment>
@@ -280,11 +280,11 @@ class EndTestSection extends React.Component {
     render() {
         return <Grid style={{ margin: 'auto', backgroundColor: '#fafafa', padding: '20px' }}>
             <GridItem columnSpan={12}>
-                <HeadingText style={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px', textAlign: 'center'}}>
+                <HeadingText style={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px', textAlign: 'center' }}>
                     Pick a version to end the test:
                 </HeadingText>
             </GridItem>
-            <GridItem columnStart={5} columnEnd={6} style={{textAlign: 'right', paddingTop: '5px'}}>
+            <GridItem columnStart={5} columnEnd={6} style={{ textAlign: 'right', paddingTop: '5px' }}>
                 <VersionSelector />
             </GridItem>
             <GridItem columnStart={7} columnEnd={8}>

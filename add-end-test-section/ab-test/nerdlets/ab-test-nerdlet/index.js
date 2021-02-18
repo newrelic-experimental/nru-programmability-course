@@ -131,7 +131,7 @@ class VersionATotals extends React.Component {
         }
         return <React.Fragment>
             <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
-                Version A - requests
+                Version A - Unsubscriptions
             </HeadingText>
             <TableChart data={[versionATotals]} fullWidth />
         </React.Fragment>
@@ -159,7 +159,7 @@ class VersionBTotals extends React.Component {
         }
         return <React.Fragment>
             <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
-                Version B - requests
+                Version B - Unsubscriptions
             </HeadingText>
             <TableChart data={[versionBTotals]} fullWidth />
         </React.Fragment>
