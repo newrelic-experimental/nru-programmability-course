@@ -1,45 +1,23 @@
 import React from 'react';
-import { BlockText, Button, ChartGroup, Grid, GridItem, HeadingText, LineChart, Modal, PieChart, Select, SelectItem, TableChart } from 'nr1';
+import { BlockText, Button, ChartGroup, Grid, GridItem, HeadingText, LineChart, Modal, NrqlQuery, PieChart, Select, SelectItem, TableChart } from 'nr1';
 
 class NewsletterSignups extends React.Component {
     render() {
-        const versionASignups = {
-            metadata: {
-                id: 'version-a-newsletter-signups',
-                name: 'Version A',
-                viz: 'main',
-                color: 'blue',
-            },
-            data: [
-                { x: 0, y: 0 },
-                { x: 10, y: 10 },
-                { x: 20, y: 15 },
-                { x: 30, y: 5 },
-                { x: 40, y: 30 },
-                { x: 50, y: 25 },
-            ],
-        }
-        const versionBSignups = {
-            metadata: {
-                id: 'version-b-newsletter-signups',
-                name: 'Version B',
-                viz: 'main',
-                color: 'green',
-            },
-            data: [
-                { x: 0, y: 20 },
-                { x: 10, y: 5 },
-                { x: 20, y: 25 },
-                { x: 30, y: 45 },
-                { x: 40, y: 50 },
-                { x: 50, y: 35 },
-            ],
-        }
         return <React.Fragment>
             <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
                 Newsletter subscriptions per version
             </HeadingText>
-            <LineChart data={[versionASignups, versionBSignups]} fullWidth />
+            <NrqlQuery
+                accountId={3014918}
+                query="SELECT count(*) FROM subscription FACET page_version SINCE 30 MINUTES AGO TIMESERIES"
+                pollInterval={60000}
+            >
+                {
+                    ({ data }) => {
+                        return <LineChart data={data} fullWidth />;
+                    }
+                }
+            </NrqlQuery>
         </React.Fragment>
     }
 }
@@ -168,60 +146,42 @@ class VersionBTotals extends React.Component {
 
 class VersionAResponseTimes extends React.Component {
     render() {
-        const versionAResponseTimes = {
-            metadata: {
-                id: 'response-times-A',
-                name: 'Version A',
-                viz: 'main',
-                color: 'blue',
-                units_data: {
-                    y: 'MS'
-                }
-            },
-            data: [
-                { x: 0, y: 10 },
-                { x: 10, y: 13 },
-                { x: 20, y: 11.5 },
-                { x: 30, y: 10 },
-                { x: 40, y: 8.75 },
-                { x: 50, y: 9 },
-            ],
-        }
         return <React.Fragment>
             <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
                 Version A - Page views
             </HeadingText>
-            <LineChart data={[versionAResponseTimes]} fullWidth />
+            <NrqlQuery
+                accountId={3014918}
+                query="SELECT count(*) FROM pageView WHERE page_version = 'a' SINCE 30 MINUTES AGO TIMESERIES"
+                pollInterval={60000}
+            >
+                {
+                    ({ data }) => {
+                        return <LineChart data={data} fullWidth />;
+                    }
+                }
+            </NrqlQuery>
         </React.Fragment>
     }
 }
 
 class VersionBResponseTimes extends React.Component {
     render() {
-        const versionBResponseTimes = {
-            metadata: {
-                id: 'response-times-B',
-                name: 'Version B',
-                viz: 'main',
-                color: 'green',
-                units_data: {
-                    y: 'MS'
-                }
-            },
-            data: [
-                { x: 0, y: 15 },
-                { x: 10, y: 13 },
-                { x: 20, y: 10 },
-                { x: 30, y: 14 },
-                { x: 40, y: 16.5 },
-                { x: 50, y: 13.5 },
-            ],
-        }
         return <React.Fragment>
             <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
                 Version B - Page views
             </HeadingText>
-            <LineChart data={[versionBResponseTimes]} fullWidth />
+            <NrqlQuery
+                accountId={3014918}
+                query="SELECT count(*) FROM pageView WHERE page_version = 'b' SINCE 30 MINUTES AGO TIMESERIES"
+                pollInterval={60000}
+            >
+                {
+                    ({ data }) => {
+                        return <LineChart data={data} fullWidth />;
+                    }
+                }
+            </NrqlQuery>
         </React.Fragment>
     }
 }
