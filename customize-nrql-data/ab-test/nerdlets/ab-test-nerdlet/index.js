@@ -24,33 +24,21 @@ class NewsletterSignups extends React.Component {
 
 class TestDistributions extends React.Component {
     render() {
-        const distributionA = {
-            metadata: {
-                id: 'distributions-A',
-                name: 'Version A',
-                viz: 'main',
-                color: 'blue',
-            },
-            data: [
-                { y: 259 },
-            ],
-        }
-        const distributionB = {
-            metadata: {
-                id: 'distributions-B',
-                name: 'Version B',
-                viz: 'main',
-                color: 'green',
-            },
-            data: [
-                { y: 318 },
-            ],
-        }
         return <React.Fragment>
             <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
                 Total subscriptions per version
             </HeadingText>
-            <PieChart data={[distributionA, distributionB]} fullWidth />
+            <NrqlQuery
+                accountId={3014918}
+                query="SELECT count(*) FROM subscription FACET page_version SINCE 7 DAYS AGO"
+                pollInterval={60000}
+            >
+                {
+                    ({ data }) => {
+                        return <PieChart data={data} fullWidth />
+                    }
+                }
+            </NrqlQuery>
         </React.Fragment>
     }
 }
