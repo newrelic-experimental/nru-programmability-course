@@ -8,7 +8,7 @@ class NewsletterSignups extends React.Component {
                 Newsletter subscriptions per version
             </HeadingText>
             <NrqlQuery
-                accountId={3014918}
+                accountId={3014901}
                 query="SELECT count(*) FROM subscription FACET page_version SINCE 30 MINUTES AGO TIMESERIES"
                 pollInterval={60000}
             >
@@ -29,7 +29,7 @@ class TestDistributions extends React.Component {
                 Total subscriptions per version
             </HeadingText>
             <NrqlQuery
-                accountId={3014918}
+                accountId={3014901}
                 query="SELECT count(*) FROM subscription FACET page_version SINCE 7 DAYS AGO"
                 pollInterval={60000}
             >
@@ -77,8 +77,8 @@ class SuccessfulRequests extends React.Component {
 }
 
 class VersionATotals extends React.Component {
-    constructor() {
-        super(...arguments);
+    constructor(props) {
+        super(props);
 
         this.state = {
             tableData: {
@@ -103,23 +103,27 @@ class VersionATotals extends React.Component {
 
     componentDidMount() {
         NrqlQuery.query({
-            accountId: 3014918,
+            accountId: 3014901,
             query: "SELECT count(*) FROM subscription WHERE page_version = 'a' SINCE 7 DAYS AGO",
             formatType: NrqlQuery.FORMAT_TYPE.RAW
         }).then(({ data }) => {
-            this.setState(state => {
-                state.tableData.data[0].count = data.raw.results[0].count
-            })
+            let tableData  = {...this.state.tableData}
+            tableData.data[0].count = data.raw.results[0].count
+            // console.log('tableData', tableData)
+            // console.log('data', data)
+            this.setState({tableData});
         })
 
         NrqlQuery.query({
-            accountId: 3014918,
+            accountId: 3014901,
             query: "SELECT count(*) FROM pageView WHERE page_version = 'a' SINCE 7 DAYS AGO",
             formatType: NrqlQuery.FORMAT_TYPE.RAW
         }).then(({ data }) => {
-            this.setState(state => {
-                state.tableData.data[1].count = data.raw.results[0].count
-            })
+            let tableData  = {...this.state.tableData}
+            tableData.data[1].count = data.raw.results[0].count
+            // console.log('tableData', tableData)
+            // console.log('data', data)
+            this.setState({tableData});
         })
     }
 
@@ -160,23 +164,23 @@ class VersionBTotals extends React.Component {
 
     componentDidMount() {
         NrqlQuery.query({
-            accountId: 3014918,
+            accountId: 3014901,
             query: "SELECT count(*) FROM subscription WHERE page_version = 'b' SINCE 7 DAYS AGO",
             formatType: NrqlQuery.FORMAT_TYPE.RAW
         }).then(({ data }) => {
-            this.setState(state => {
-                state.tableData.data[0].count = data.raw.results[0].count
-            })
+            let tableData = {...this.state.tableData}
+            tableData.data[0].count = data.raw.results[0].count
+            this.setState({tableData})
         })
 
         NrqlQuery.query({
-            accountId: 3014918,
+            accountId: 3014901,
             query: "SELECT count(*) FROM pageView WHERE page_version = 'b' SINCE 7 DAYS AGO",
             formatType: NrqlQuery.FORMAT_TYPE.RAW
         }).then(({ data }) => {
-            this.setState(state => {
-                state.tableData.data[1].count = data.raw.results[0].count
-            })
+            let tableData = {...this.state.tableData}
+            tableData.data[1].count = data.raw.results[0].count
+            this.setState({tableData})
         })
     }
 
@@ -197,7 +201,7 @@ class VersionAResponseTimes extends React.Component {
                 Version A - Page views
             </HeadingText>
             <NrqlQuery
-                accountId={3014918}
+                accountId={3014901}
                 query="SELECT count(*) FROM pageView WHERE page_version = 'a' SINCE 30 MINUTES AGO TIMESERIES"
                 pollInterval={60000}
             >
@@ -218,7 +222,7 @@ class VersionBResponseTimes extends React.Component {
                 Version B - Page views
             </HeadingText>
             <NrqlQuery
-                accountId={3014918}
+                accountId={3014901}
                 query="SELECT count(*) FROM pageView WHERE page_version = 'b' SINCE 30 MINUTES AGO TIMESERIES"
                 pollInterval={60000}
             >
