@@ -107,11 +107,11 @@ class VersionATotals extends React.Component {
             query: "SELECT count(*) FROM subscription WHERE page_version = 'a' SINCE 7 DAYS AGO",
             formatType: NrqlQuery.FORMAT_TYPE.RAW
         }).then(({ data }) => {
-            let tableData  = {...this.state.tableData}
-            tableData.data[0].count = data.raw.results[0].count
-            // console.log('tableData', tableData)
-            // console.log('data', data)
-            this.setState({tableData});
+            if (data.raw) {
+                let tableData  = {...this.state.tableData}
+                tableData.data[0].count = data.raw.results[0].count
+                this.setState({tableData});
+            }
         })
 
         NrqlQuery.query({
@@ -119,11 +119,11 @@ class VersionATotals extends React.Component {
             query: "SELECT count(*) FROM pageView WHERE page_version = 'a' SINCE 7 DAYS AGO",
             formatType: NrqlQuery.FORMAT_TYPE.RAW
         }).then(({ data }) => {
-            let tableData  = {...this.state.tableData}
-            tableData.data[1].count = data.raw.results[0].count
-            // console.log('tableData', tableData)
-            // console.log('data', data)
-            this.setState({tableData});
+            if (data.raw) {
+                let tableData  = {...this.state.tableData}
+                tableData.data[1].count = data.raw.results[0].count
+                this.setState({tableData});
+            }
         })
     }
 
@@ -168,9 +168,11 @@ class VersionBTotals extends React.Component {
             query: "SELECT count(*) FROM subscription WHERE page_version = 'b' SINCE 7 DAYS AGO",
             formatType: NrqlQuery.FORMAT_TYPE.RAW
         }).then(({ data }) => {
-            let tableData = {...this.state.tableData}
-            tableData.data[0].count = data.raw.results[0].count
-            this.setState({tableData})
+            if (data.raw) {
+                let tableData = {...this.state.tableData}
+                tableData.data[0].count = data.raw.results[0].count
+                this.setState({tableData})
+            }
         })
 
         NrqlQuery.query({
@@ -178,9 +180,11 @@ class VersionBTotals extends React.Component {
             query: "SELECT count(*) FROM pageView WHERE page_version = 'b' SINCE 7 DAYS AGO",
             formatType: NrqlQuery.FORMAT_TYPE.RAW
         }).then(({ data }) => {
-            let tableData = {...this.state.tableData}
-            tableData.data[1].count = data.raw.results[0].count
-            this.setState({tableData})
+            if (data.raw) {
+                let tableData = {...this.state.tableData}
+                tableData.data[1].count = data.raw.results[0].count
+                this.setState({tableData})
+            }
         })
     }
 
