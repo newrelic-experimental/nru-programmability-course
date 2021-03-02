@@ -2,6 +2,5 @@
     "schemaType": "NERDLET",
     "id": "ab-test-nerdlet",
     "displayName": "AbTestNerdlet",
-    "description": "",
-    "entities": [{ "domain": "APM",  "type": "APPLICATION" }]
+    "description": ""
 }

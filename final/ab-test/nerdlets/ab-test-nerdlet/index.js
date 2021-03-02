@@ -1,7 +1,7 @@
 import React from 'react';
-import { AccountStorageMutation, AccountStorageQuery, BlockText, Button, ChartGroup, Grid, GridItem, HeadingText, LineChart, Modal, NerdGraphQuery, NerdGraphMutation, NerdletStateContext, NrqlQuery, PlatformStateContext, PieChart, Select, SelectItem, Spinner, TableChart, TextField } from 'nr1';
+import { AccountStorageMutation, AccountStorageQuery, BlockText, Button, ChartGroup, Grid, GridItem, HeadingText, LineChart, Modal, NerdGraphQuery, NerdGraphMutation, NerdletStateContext, NrqlQuery, PlatformStateContext, PieChart, Select, SelectItem, Spinner, TableChart, TextField, navigation } from 'nr1';
 
-const ACCOUNT_ID = 3014901;
+const ACCOUNT_ID = 3014918;
 const VERSION_A_DESCRIPTION = 'The newsletter signup message says, "Sign up for our newsletter"'
 const VERSION_B_DESCRIPTION = 'The newsletter signup message says, "Sign up for our newsletter and get a free shirt!"'
 
@@ -21,15 +21,29 @@ function getQuery(platformState, baseQuery) {
         const since = platformState.timeRange.duration/1000/60;
         query = `${baseQuery} SINCE ${since} MINUTES AGO TIMESERIES`
     }
+
     return query
 }
 
 class NewsletterSignups extends React.Component {
+    openAPMEntity() {
+        navigation.openStackedEntity("MzAxNDkxOHxBUE18QVBQTElDQVRJT058ODU0OTExNzE5")
+    }
+
     render() {
         return <React.Fragment>
-            <HeadingText className="chartHeader">
-                Newsletter subscriptions per version
-            </HeadingText>
+            <Grid>
+                <GridItem columnSpan={10}>
+                    <HeadingText className="chartHeader">
+                        Newsletter subscriptions per version
+                    </HeadingText>
+                </GridItem>
+                <GridItem columnSpan={2}>
+                    <Button onClick={this.openAPMEntity}>
+                        App performance
+                    </Button>
+                </GridItem>
+            </Grid>
             <PlatformStateContext.Consumer>
                 {
                     (platformState) => {
@@ -110,11 +124,29 @@ class TotalCancellations extends React.Component {
     componentDidUpdate() {
         if (this.props.token && this.props.token != this.state.lastToken) {
             console.log(`requesting data with api token ${this.props.token}`)
+            fetch("https://ygs07koo0i.execute-api.us-east-1.amazonaws.com/api/cancellations", {headers: {"Authorization": `Bearer ${this.props.token}`}})
+                .then(
+                    (response) => {
+                        if (response.status == 200) {
+                            return response.json()
+                        } else if (response.status == 401) {
+                            console.error("Incorrect auth header")
+                        } else {
+                            console.error(response.text())
+                        }
+                    }
+                )
+                .then(
+                    (data) => {
+                        if (data) {
+                            let cancellations = this.state.cancellations.slice()
+                            cancellations[0].data[0].y = data.a
+                            cancellations[1].data[0].y = data.b
+                            this.setState({ cancellations: cancellations, lastToken: this.props.token })
+                        }
+                    }
+                )
 
-            let cancellations = this.state.cancellations.slice()
-            cancellations[0].data[0].y = 17
-            cancellations[1].data[0].y = 51
-            this.setState({ cancellations: cancellations, lastToken: this.props.token })
         }
     }
 
@@ -518,11 +550,17 @@ class ApiTokenPrompt extends React.Component {
         }
     }
 
+    keyPress(event) {
+        if(event.keyCode == 13) {
+            event.preventDefault();
+        }
+    }
+
     render() {
         return <Modal hidden={this.props.hideTokenPrompt} onClose={() => { }}>
             To see cancellation data, you need to enter an API token for your backend service:
             <form>
-                <TextField label="API token" onChange={this.changeToken} />
+                <TextField label="API token" onChange={this.changeToken} onKeyDown={this.keyPress} />
                 <Button type={Button.TYPE.PRIMARY} onClick={this.submitToken}>Submit</Button>
                 {this.state.tokenError &&
                     <BlockText className="errorText">Invalid token</BlockText>
