@@ -560,11 +560,8 @@ class ApiTokenPrompt extends React.Component {
         return <Modal hidden={this.props.hideTokenPrompt} onClose={() => { }}>
             To see cancellation data, you need to enter an API token for your backend service:
             <form>
-                <TextField label="API token" onChange={this.changeToken} onKeyDown={this.keyPress} />
+                <TextField label="API token" onChange={this.changeToken} onKeyDown={this.keyPress} invalid={this.state.tokenError ? "Token required" : false} />
                 <Button type={Button.TYPE.PRIMARY} onClick={this.submitToken}>Submit</Button>
-                {this.state.tokenError &&
-                    <BlockText className="errorText">Invalid token</BlockText>
-                }
             </form>
         </Modal>
     }
