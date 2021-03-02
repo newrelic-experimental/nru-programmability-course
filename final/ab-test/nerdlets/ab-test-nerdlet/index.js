@@ -252,39 +252,18 @@ class VersionBTotals extends React.Component {
     }
 }
 
-class VersionAResponseTimes extends React.Component {
+class VersionAPageViews extends React.Component {
     render() {
         return <React.Fragment>
             <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
                 Version A - Page views
             </HeadingText>
-            <NrqlQuery
-                accountId={ACCOUNT_ID}
-                query="SELECT count(*) FROM pageView WHERE page_version = 'a' SINCE 30 MINUTES AGO TIMESERIES"
-                pollInterval={60000}
-            >
-                {
-                    ({ data }) => {
-                        return <LineChart data={data} fullWidth />;
-                    }
-                }
-            </NrqlQuery>
-        </React.Fragment>
-    }
-}
-
-class VersionBResponseTimes extends React.Component {
-    render() {
-        return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
-                Version B - Page views
-            </HeadingText>
             <PlatformStateContext.Consumer>
                 {
                     (platformState) => {
-                        <NrqlQuery
+                        return <NrqlQuery
                             accountId={ACCOUNT_ID}
-                            query={getQuery(platformState, "SELECT count(*) FROM pageView WHERE page_version = 'b' SINCE 30 MINUTES AGO TIMESERIES")}
+                            query={getQuery(platformState, "SELECT count(*) FROM pageView WHERE page_version = 'a'")}
                             pollInterval={60000}
                         >
                             {
@@ -300,7 +279,34 @@ class VersionBResponseTimes extends React.Component {
     }
 }
 
-class HistoricalTests extends React.Component {
+class VersionBPageViews extends React.Component {
+    render() {
+        return <React.Fragment>
+            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+                Version B - Page views
+            </HeadingText>
+            <PlatformStateContext.Consumer>
+                {
+                    (platformState) => {
+                        return <NrqlQuery
+                            accountId={ACCOUNT_ID}
+                            query={getQuery(platformState, "SELECT count(*) FROM pageView WHERE page_version = 'b'")}
+                            pollInterval={60000}
+                        >
+                            {
+                                ({ data }) => {
+                                    return <LineChart data={data} fullWidth />;
+                                }
+                            }
+                        </NrqlQuery>
+                    }
+                }
+            </PlatformStateContext.Consumer>
+        </React.Fragment>
+    }
+}
+
+class PastTests extends React.Component {
     render() {
         var historicalData = {
             metadata: {
@@ -359,7 +365,21 @@ class EndTestButton extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            modalHidden: true,
+        }
+
+        this.showModal = this.showModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.endTest = this.endTest.bind(this);
+    }
+
+    closeModal() {
+        this.setState({ modalHidden: true });
+    }
+
+    showModal() {
+        this.setState({ modalHidden: false });
     }
 
     endTest() {
@@ -381,14 +401,14 @@ class EndTestButton extends React.Component {
                 }
             }
         )
-        this.props.closeModal();
+        this.closeModal();
     }
 
     render() {
         return <React.Fragment>
-            <Button type={Button.TYPE.DESTRUCTIVE} onClick={this.props.showModal}>End test</Button>
+            <Button type={Button.TYPE.DESTRUCTIVE} onClick={this.showModal}>End test</Button>
 
-            <Modal hidden={this.props.modalHidden} onClose={this.props.closeModal}>
+            <Modal hidden={this.state.modalHidden} onClose={this.closeModal}>
                 <HeadingText>Are you sure?</HeadingText>
                 <BlockText>
                     If you end the test, all your users will receive the version you selected:
@@ -398,7 +418,7 @@ class EndTestButton extends React.Component {
                     <b>Version {this.props.selectedVersion}</b>
                 </BlockText>
 
-                <Button onClick={this.props.closeModal}>No, continue test</Button>
+                <Button onClick={this.closeModal}>No, continue test</Button>
                 <Button type={Button.TYPE.DESTRUCTIVE} onClick={this.endTest}>Yes, end test</Button>
             </Modal>
         </React.Fragment>
@@ -411,24 +431,13 @@ class EndTestSection extends React.Component {
 
         this.state = {
             selectedVersion: 'A',
-            modalHidden: true,
         };
 
         this.selectVersion = this.selectVersion.bind(this);
-        this.showModal = this.showModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
     }
 
     selectVersion(event, value) {
         this.setState({ selectedVersion: value });
-    }
-
-    closeModal() {
-        this.setState({ modalHidden: true });
-    }
-
-    showModal() {
-        this.setState({ modalHidden: false });
     }
 
     render() {
@@ -445,14 +454,7 @@ class EndTestSection extends React.Component {
                 />
             </GridItem>
             <GridItem columnStart={7} columnEnd={8}>
-                <EndTestButton
-                    modalHidden={this.state.modalHidden}
-                    closeModal={this.closeModal}
-                    showModal={this.showModal}
-                    selectedVersion={this.state.selectedVersion}
-                >
-                    End test
-                </EndTestButton>
+                <EndTestButton selectedVersion={this.state.selectedVersion}>End test</EndTestButton>
             </GridItem>
         </Grid>
     }
@@ -580,9 +582,7 @@ class ApiTokenPrompt extends React.Component {
                     this.showPrompt();
                 }
 
-                if (data && data.actor.nerdStorageVault.secret) {
-                    console.log(data.actor.nerdStorageVault.secret);
-                } else {
+                if (!data || !data.actor.nerdStorageVault.secret) {
                     this.showPrompt();
                 }
             }
@@ -591,7 +591,7 @@ class ApiTokenPrompt extends React.Component {
 
     render() {
         return <Modal hidden={this.state.hideTokenPrompt} onClose={() => { }}>
-            To see unsubscription data, and to have the ability to end your test, you need to enter an API token for your backend service:
+            To see unsubscription data, you need to enter an API token for your backend service:
 
             <form>
                 <TextField label="API token" onChange={this.changeToken} />
@@ -618,11 +618,11 @@ export default class AbTestNerdletNerdlet extends React.Component {
                 <GridItem columnSpan={6}><VersionATotals /></GridItem>
                 <GridItem columnSpan={6}><VersionBTotals /></GridItem>
                 <ChartGroup>
-                    <GridItem columnSpan={6}><VersionAResponseTimes /></GridItem>
-                    <GridItem columnSpan={6}><VersionBResponseTimes /></GridItem>
+                    <GridItem columnSpan={6}><VersionAPageViews /></GridItem>
+                    <GridItem columnSpan={6}><VersionBPageViews /></GridItem>
                 </ChartGroup>
                 <GridItem columnSpan={12}><EndTestSection /></GridItem>
-                <GridItem columnSpan={12}><HistoricalTests /></GridItem>
+                <GridItem columnSpan={12}><PastTests /></GridItem>
             </Grid>
         )
     }
