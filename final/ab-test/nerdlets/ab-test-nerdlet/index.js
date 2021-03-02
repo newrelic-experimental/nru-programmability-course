@@ -524,6 +524,7 @@ class ApiTokenPrompt extends React.Component {
         this.submitToken = this.submitToken.bind(this);
         this.hideTokenError = this.hideTokenError.bind(this);
         this.changeToken = this.changeToken.bind(this);
+        this.keyPress = this.keyPress.bind(this);
     }
 
     showTokenError() {
@@ -553,6 +554,8 @@ class ApiTokenPrompt extends React.Component {
     keyPress(event) {
         if(event.keyCode == 13) {
             event.preventDefault();
+
+            this.submitToken(event);
         }
     }
 
