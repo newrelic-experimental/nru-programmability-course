@@ -4,7 +4,7 @@ import { BlockText, Button, ChartGroup, Grid, GridItem, HeadingText, LineChart, 
 class NewsletterSignups extends React.Component {
     render() {
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Newsletter subscriptions per version
             </HeadingText>
             <NrqlQuery
@@ -25,7 +25,7 @@ class NewsletterSignups extends React.Component {
 class TestDistributions extends React.Component {
     render() {
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Total subscriptions per version
             </HeadingText>
             <NrqlQuery
@@ -68,7 +68,7 @@ class SuccessfulRequests extends React.Component {
             ],
         }
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Total unsubscriptions per version
             </HeadingText>
             <PieChart data={[successesA, successesB]} fullWidth />
@@ -96,7 +96,7 @@ class VersionATotals extends React.Component {
             ],
         }
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Version A - Page views vs. subscriptions
             </HeadingText>
             <TableChart data={[versionATotals]} fullWidth />
@@ -124,7 +124,7 @@ class VersionBTotals extends React.Component {
             ],
         }
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Version B - Page views vs. subscriptions
             </HeadingText>
             <TableChart data={[versionBTotals]} fullWidth />
@@ -135,7 +135,7 @@ class VersionBTotals extends React.Component {
 class VersionAResponseTimes extends React.Component {
     render() {
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Version A - Page views
             </HeadingText>
             <NrqlQuery
@@ -156,7 +156,7 @@ class VersionAResponseTimes extends React.Component {
 class VersionBResponseTimes extends React.Component {
     render() {
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Version B - Page views
             </HeadingText>
             <NrqlQuery
@@ -199,7 +199,7 @@ class HistoricalTests extends React.Component {
         }
 
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Past tests
             </HeadingText>
             <TableChart data={[historicalData]} fullWidth />
@@ -273,13 +273,13 @@ class EndTestSection extends React.Component {
     }
 
     render() {
-        return <Grid style={{ margin: 'auto', backgroundColor: '#fafafa', padding: '20px' }}>
+        return <Grid className="abTestGrid">
             <GridItem columnSpan={12}>
-                <HeadingText style={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px', textAlign: 'center' }}>
+                <HeadingText  className="sectionHeader">
                     Pick a version to end the test:
                 </HeadingText>
             </GridItem>
-            <GridItem columnStart={5} columnEnd={6} style={{ textAlign: 'right', paddingTop: '5px' }}>
+            <GridItem columnStart={5} columnEnd={6}  className="versionSelector">
                 <VersionSelector
                     selectedVersion={this.state.selectedVersion}
                     selectVersion={this.selectVersion}
