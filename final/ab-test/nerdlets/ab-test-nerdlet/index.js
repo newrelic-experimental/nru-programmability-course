@@ -74,55 +74,56 @@ class TotalSubscriptions extends React.Component {
     }
 }
 
-class TotalUnsubscriptions extends React.Component {
+class TotalCancellations extends React.Component {
     constructor() {
         super(...arguments);
 
         this.state = {
-            successesA: {
-                metadata: {
-                    id: 'successes-A',
-                    name: 'Version A',
-                    viz: 'main',
-                    color: 'blue',
+            cancellations: [
+                {
+                    metadata: {
+                        id: 'cancellations-A',
+                        name: 'Version A',
+                        viz: 'main',
+                        color: 'blue',
+                    },
+                    data: [
+                        { y: 0 },
+                    ],
                 },
-                data: [
-                    { y: 0 },
-                ],
-            },
-            successesB:  {
-                metadata: {
-                    id: 'successes-B',
-                    name: 'Version B',
-                    viz: 'main',
-                    color: 'green',
+                {
+                    metadata: {
+                        id: 'cancellations-B',
+                        name: 'Version B',
+                        viz: 'main',
+                        color: 'green',
+                    },
+                    data: [
+                        { y: 0 },
+                    ],
                 },
-                data: [
-                    { y: 0 },
-                ],
-            }
+            ],
+            lastToken: null
         }
     }
 
-    componentDidMount() {
-        // fetch(
-        //     "http://3.12.41.152:5001/unsubscribes",
-        //     {
-        //         headers: {
-        //             "Authorization": "Bearer ABC123",
-        //         }
-        //     }
-        // ).then(res => {
-        //     console.log(res.json())
-        // })
+    componentDidUpdate() {
+        if (this.props.token && this.props.token != this.state.lastToken) {
+            console.log(`requesting data with api token ${this.props.token}`)
+
+            let cancellations = this.state.cancellations.slice()
+            cancellations[0].data[0].y = 17
+            cancellations[1].data[0].y = 51
+            this.setState({ cancellations: cancellations, lastToken: this.props.token })
+        }
     }
 
     render() {
         return <React.Fragment>
             <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
-                Total unsubscriptions per version
+                Total cancellations per version
             </HeadingText>
-            <PieChart data={[this.state.successesA, this.state.successesB]} fullWidth />
+            <PieChart data={this.state.cancellations} fullWidth />
         </React.Fragment>
     }
 }
@@ -252,39 +253,18 @@ class VersionBTotals extends React.Component {
     }
 }
 
-class VersionAResponseTimes extends React.Component {
+class VersionAPageViews extends React.Component {
     render() {
         return <React.Fragment>
             <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
                 Version A - Page views
             </HeadingText>
-            <NrqlQuery
-                accountId={ACCOUNT_ID}
-                query="SELECT count(*) FROM pageView WHERE page_version = 'a' SINCE 30 MINUTES AGO TIMESERIES"
-                pollInterval={60000}
-            >
-                {
-                    ({ data }) => {
-                        return <LineChart data={data} fullWidth />;
-                    }
-                }
-            </NrqlQuery>
-        </React.Fragment>
-    }
-}
-
-class VersionBResponseTimes extends React.Component {
-    render() {
-        return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
-                Version B - Page views
-            </HeadingText>
             <PlatformStateContext.Consumer>
                 {
                     (platformState) => {
-                        <NrqlQuery
+                        return <NrqlQuery
                             accountId={ACCOUNT_ID}
-                            query={getQuery(platformState, "SELECT count(*) FROM pageView WHERE page_version = 'b' SINCE 30 MINUTES AGO TIMESERIES")}
+                            query={getQuery(platformState, "SELECT count(*) FROM pageView WHERE page_version = 'a'")}
                             pollInterval={60000}
                         >
                             {
@@ -300,7 +280,34 @@ class VersionBResponseTimes extends React.Component {
     }
 }
 
-class HistoricalTests extends React.Component {
+class VersionBPageViews extends React.Component {
+    render() {
+        return <React.Fragment>
+            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+                Version B - Page views
+            </HeadingText>
+            <PlatformStateContext.Consumer>
+                {
+                    (platformState) => {
+                        return <NrqlQuery
+                            accountId={ACCOUNT_ID}
+                            query={getQuery(platformState, "SELECT count(*) FROM pageView WHERE page_version = 'b'")}
+                            pollInterval={60000}
+                        >
+                            {
+                                ({ data }) => {
+                                    return <LineChart data={data} fullWidth />;
+                                }
+                            }
+                        </NrqlQuery>
+                    }
+                }
+            </PlatformStateContext.Consumer>
+        </React.Fragment>
+    }
+}
+
+class PastTests extends React.Component {
     render() {
         var historicalData = {
             metadata: {
@@ -359,7 +366,21 @@ class EndTestButton extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            modalHidden: true,
+        }
+
+        this.showModal = this.showModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.endTest = this.endTest.bind(this);
+    }
+
+    closeModal() {
+        this.setState({ modalHidden: true });
+    }
+
+    showModal() {
+        this.setState({ modalHidden: false });
     }
 
     endTest() {
@@ -381,14 +402,14 @@ class EndTestButton extends React.Component {
                 }
             }
         )
-        this.props.closeModal();
+        this.closeModal();
     }
 
     render() {
         return <React.Fragment>
-            <Button type={Button.TYPE.DESTRUCTIVE} onClick={this.props.showModal}>End test</Button>
+            <Button type={Button.TYPE.DESTRUCTIVE} onClick={this.showModal}>End test</Button>
 
-            <Modal hidden={this.props.modalHidden} onClose={this.props.closeModal}>
+            <Modal hidden={this.state.modalHidden} onClose={this.closeModal}>
                 <HeadingText>Are you sure?</HeadingText>
                 <BlockText>
                     If you end the test, all your users will receive the version you selected:
@@ -398,7 +419,7 @@ class EndTestButton extends React.Component {
                     <b>Version {this.props.selectedVersion}</b>
                 </BlockText>
 
-                <Button onClick={this.props.closeModal}>No, continue test</Button>
+                <Button onClick={this.closeModal}>No, continue test</Button>
                 <Button type={Button.TYPE.DESTRUCTIVE} onClick={this.endTest}>Yes, end test</Button>
             </Modal>
         </React.Fragment>
@@ -411,24 +432,13 @@ class EndTestSection extends React.Component {
 
         this.state = {
             selectedVersion: 'A',
-            modalHidden: true,
         };
 
         this.selectVersion = this.selectVersion.bind(this);
-        this.showModal = this.showModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
     }
 
     selectVersion(event, value) {
         this.setState({ selectedVersion: value });
-    }
-
-    closeModal() {
-        this.setState({ modalHidden: true });
-    }
-
-    showModal() {
-        this.setState({ modalHidden: false });
     }
 
     render() {
@@ -445,14 +455,7 @@ class EndTestSection extends React.Component {
                 />
             </GridItem>
             <GridItem columnStart={7} columnEnd={8}>
-                <EndTestButton
-                    modalHidden={this.state.modalHidden}
-                    closeModal={this.closeModal}
-                    showModal={this.showModal}
-                    selectedVersion={this.state.selectedVersion}
-                >
-                    End test
-                </EndTestButton>
+                <EndTestButton selectedVersion={this.state.selectedVersion}>End test</EndTestButton>
             </GridItem>
         </Grid>
     }
@@ -482,26 +485,13 @@ class ApiTokenPrompt extends React.Component {
         super(...arguments);
 
         this.state = {
-            hideTokenPrompt: true,
             token: null,
             tokenError: false,
         };
 
-        this.showPrompt = this.showPrompt.bind(this);
-        this.hidePrompt = this.hidePrompt.bind(this);
-        this.changeToken = this.changeToken.bind(this);
         this.submitToken = this.submitToken.bind(this);
         this.hideTokenError = this.hideTokenError.bind(this);
         this.changeToken = this.changeToken.bind(this);
-        this.storeToken = this.storeToken.bind(this);
-    }
-
-    showPrompt() {
-        this.setState({ hideTokenPrompt: false });
-    }
-
-    hidePrompt() {
-        this.setState({ hideTokenPrompt: true });
     }
 
     showTokenError() {
@@ -516,39 +506,64 @@ class ApiTokenPrompt extends React.Component {
         this.setState({ token: event.target.value });
     }
 
-    storeToken() {
-        const mutation = `
-            mutation($key: String!, $token: SecureValue!) {
-                nerdStorageVaultWriteSecret(
-                    scope: { actor: CURRENT_USER }
-                    secret: { key: $key, value: $token }
-                ) {
-                    status
-                    errors {
-                        message
-                        type
-                    }
-                }
-            }
-        `;
-        const variables = {
-            key: "api_token",
-            token: this.state.token,
-        };
-        NerdGraphMutation.mutate({ mutation: mutation, variables: variables });
-    }
-
     submitToken(event) {
         event.preventDefault();
 
-        var token = this.state.token
-        if (token) {
-            this.storeToken()
+        if (this.state.token) {
+            this.props.storeToken(this.state.token)
             this.hideTokenError()
-            this.hidePrompt()
+            this.props.hidePrompt()
         } else {
             this.showTokenError()
         }
+    }
+
+    render() {
+        return <Modal hidden={this.props.hideTokenPrompt} onClose={() => { }}>
+            To see cancellation data, you need to enter an API token for your backend service:
+            <form>
+                <TextField label="API token" onChange={this.changeToken} />
+                <Button type={Button.TYPE.PRIMARY} onClick={this.submitToken}>Submit</Button>
+                {this.state.tokenError &&
+                    <BlockText style={{ color: "red" }}>Invalid token</BlockText>
+                }
+            </form>
+        </Modal >
+    }
+}
+
+class ApiTokenButton extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        return (
+            <Button onClick={this.props.showPrompt}>Update API token</Button>
+        )
+    }
+}
+
+export default class AbTestNerdletNerdlet extends React.Component {
+    constructor() {
+        super(...arguments);
+
+        this.state = {
+            hideTokenPrompt: true,
+            token: null,
+        }
+
+        this.showPrompt = this.showPrompt.bind(this);
+        this.hidePrompt = this.hidePrompt.bind(this);
+        this.storeToken = this.storeToken.bind(this);
+    }
+
+    showPrompt() {
+        this.setState({ hideTokenPrompt: false });
+    }
+
+    hidePrompt() {
+        this.setState({ hideTokenPrompt: true });
     }
 
     componentDidMount() {
@@ -557,7 +572,6 @@ class ApiTokenPrompt extends React.Component {
                 actor {
                     nerdStorageVault {
                         secret(key: $key) {
-                            key
                             value
                         }
                     }
@@ -581,7 +595,7 @@ class ApiTokenPrompt extends React.Component {
                 }
 
                 if (data && data.actor.nerdStorageVault.secret) {
-                    console.log(data.actor.nerdStorageVault.secret);
+                    this.setState({ token: data.actor.nerdStorageVault.secret.value })
                 } else {
                     this.showPrompt();
                 }
@@ -589,40 +603,64 @@ class ApiTokenPrompt extends React.Component {
         )
     }
 
-    render() {
-        return <Modal hidden={this.state.hideTokenPrompt} onClose={() => { }}>
-            To see unsubscription data, and to have the ability to end your test, you need to enter an API token for your backend service:
-
-            <form>
-                <TextField label="API token" onChange={this.changeToken} />
-                <Button type={Button.TYPE.PRIMARY} onClick={this.submitToken}>Submit</Button>
-                {this.state.tokenError &&
-                    <BlockText style={{ color: "red" }}>Invalid token</BlockText>
+    storeToken(newToken) {
+        if (newToken != this.state.token) {
+            const mutation = `
+                mutation($key: String!, $token: SecureValue!) {
+                    nerdStorageVaultWriteSecret(
+                        scope: { actor: CURRENT_USER }
+                        secret: { key: $key, value: $token }
+                    ) {
+                        status
+                        errors {
+                            message
+                            type
+                        }
+                    }
                 }
-            </form>
-        </Modal >
+            `;
+            const variables = {
+                key: "api_token",
+                token: newToken,
+            };
+            NerdGraphMutation.mutate({ mutation: mutation, variables: variables }).then(
+                (data) => {
+                    if (data.data.nerdStorageVaultWriteSecret.status === "SUCCESS") {
+                        this.setState({token: newToken})
+                    }
+                }
+            );
+        }
     }
-}
 
-export default class AbTestNerdletNerdlet extends React.Component {
     render() {
         return (
             <Grid style={{ width: '75%', margin: 'auto' }}>
-                <GridItem columnSpan={12}><ApiTokenPrompt /></GridItem>
+                <GridItem columnSpan={12}>
+                    <ApiTokenPrompt
+                        hideTokenPrompt={this.state.hideTokenPrompt}
+                        hidePrompt={this.hidePrompt}
+                        showPrompt={this.showPrompt}
+                        storeToken={this.storeToken}
+                    />
+                </GridItem>
                 <GridItem columnSpan={6}><VersionDescription version="A" description={VERSION_A_DESCRIPTION} /></GridItem>
                 <GridItem columnSpan={6}><VersionDescription version="B" description={VERSION_B_DESCRIPTION} /></GridItem>
                 <GridItem columnSpan={12}><hr /></GridItem>
                 <GridItem columnSpan={12}><NewsletterSignups /></GridItem>
                 <GridItem columnSpan={6}><TotalSubscriptions /></GridItem>
-                <GridItem columnSpan={6}><TotalUnsubscriptions /></GridItem>
+                <GridItem columnSpan={6}>
+                    <TotalCancellations token={this.state.token} />
+                </GridItem>
                 <GridItem columnSpan={6}><VersionATotals /></GridItem>
                 <GridItem columnSpan={6}><VersionBTotals /></GridItem>
                 <ChartGroup>
-                    <GridItem columnSpan={6}><VersionAResponseTimes /></GridItem>
-                    <GridItem columnSpan={6}><VersionBResponseTimes /></GridItem>
+                    <GridItem columnSpan={6}><VersionAPageViews /></GridItem>
+                    <GridItem columnSpan={6}><VersionBPageViews /></GridItem>
                 </ChartGroup>
                 <GridItem columnSpan={12}><EndTestSection /></GridItem>
-                <GridItem columnSpan={12}><HistoricalTests /></GridItem>
+                <GridItem columnSpan={12}><PastTests /></GridItem>
+                <GridItem columnSpan={12}><ApiTokenButton showPrompt={this.showPrompt} /></GridItem>
             </Grid>
         )
     }
