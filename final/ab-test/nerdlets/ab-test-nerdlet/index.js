@@ -1,7 +1,7 @@
 import React from 'react';
 import { AccountStorageMutation, AccountStorageQuery, BlockText, Button, ChartGroup, Grid, GridItem, HeadingText, LineChart, Modal, NerdGraphQuery, NerdGraphMutation, NerdletStateContext, NrqlQuery, PlatformStateContext, PieChart, Select, SelectItem, Spinner, TableChart, TextField } from 'nr1';
 
-const ACCOUNT_ID = 3014918;
+const ACCOUNT_ID = 3014901;
 const VERSION_A_DESCRIPTION = 'The newsletter signup message says, "Sign up for our newsletter"'
 const VERSION_B_DESCRIPTION = 'The newsletter signup message says, "Sign up for our newsletter and get a free shirt!"'
 
@@ -27,7 +27,7 @@ function getQuery(platformState, baseQuery) {
 class NewsletterSignups extends React.Component {
     render() {
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Newsletter subscriptions per version
             </HeadingText>
             <PlatformStateContext.Consumer>
@@ -56,7 +56,7 @@ class NewsletterSignups extends React.Component {
 class TotalSubscriptions extends React.Component {
     render() {
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Total subscriptions per version
             </HeadingText>
             <NrqlQuery
@@ -120,7 +120,7 @@ class TotalCancellations extends React.Component {
 
     render() {
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Total cancellations per version
             </HeadingText>
             <PieChart data={this.state.cancellations} fullWidth />
@@ -182,7 +182,7 @@ class VersionATotals extends React.Component {
 
     render() {
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Version A - Page views vs. subscriptions
             </HeadingText>
             <TableChart data={[this.state.tableData]} fullWidth />
@@ -245,7 +245,7 @@ class VersionBTotals extends React.Component {
 
     render() {
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Version B - Page views vs. subscriptions
             </HeadingText>
             <TableChart data={[this.state.tableData]} fullWidth />
@@ -256,7 +256,7 @@ class VersionBTotals extends React.Component {
 class VersionAPageViews extends React.Component {
     render() {
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Version A - Page views
             </HeadingText>
             <PlatformStateContext.Consumer>
@@ -283,7 +283,7 @@ class VersionAPageViews extends React.Component {
 class VersionBPageViews extends React.Component {
     render() {
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Version B - Page views
             </HeadingText>
             <PlatformStateContext.Consumer>
@@ -319,7 +319,7 @@ class PastTests extends React.Component {
         }
 
         return <React.Fragment>
-            <HeadingText style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <HeadingText className="chartHeader">
                 Past tests
             </HeadingText>
             <AccountStorageQuery accountId={ACCOUNT_ID} collection="past-tests">
@@ -442,13 +442,13 @@ class EndTestSection extends React.Component {
     }
 
     render() {
-        return <Grid style={{ margin: 'auto', backgroundColor: '#fafafa', padding: '20px' }}>
+        return <Grid className="endTestSection">
             <GridItem columnSpan={12}>
-                <HeadingText style={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '20px', marginBottom: '20px', textAlign: 'center' }}>
+                <HeadingText className="endTestHeader">
                     Pick a version to end the test:
                 </HeadingText>
             </GridItem>
-            <GridItem columnStart={5} columnEnd={6} style={{ textAlign: 'right', paddingTop: '5px' }}>
+            <GridItem columnStart={5} columnEnd={6} className="versionSelector">
                 <VersionSelector
                     selectedVersion={this.state.selectedVersion}
                     selectVersion={this.selectVersion}
@@ -469,10 +469,10 @@ class VersionDescription extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <HeadingText style={{ textAlign: "center", marginTop: "20px", marginBottom: "20px" }}>
+                <HeadingText className="versionHeader">
                     Version {this.props.version}
                 </HeadingText>
-                <BlockText style={{ marginBottom: "20px" }}>
+                <BlockText className="versionText">
                     {this.props.description}
                 </BlockText>
             </React.Fragment>
@@ -525,10 +525,10 @@ class ApiTokenPrompt extends React.Component {
                 <TextField label="API token" onChange={this.changeToken} />
                 <Button type={Button.TYPE.PRIMARY} onClick={this.submitToken}>Submit</Button>
                 {this.state.tokenError &&
-                    <BlockText style={{ color: "red" }}>Invalid token</BlockText>
+                    <BlockText className="errorText">Invalid token</BlockText>
                 }
             </form>
-        </Modal >
+        </Modal>
     }
 }
 
@@ -635,7 +635,7 @@ export default class AbTestNerdletNerdlet extends React.Component {
 
     render() {
         return (
-            <Grid style={{ width: '75%', margin: 'auto' }}>
+            <Grid className="wrapper">
                 <GridItem columnSpan={12}>
                     <ApiTokenPrompt
                         hideTokenPrompt={this.state.hideTokenPrompt}
