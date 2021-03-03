@@ -107,7 +107,7 @@ class TotalCancellations extends React.Component {
     componentDidUpdate() {
         if (this.props.token && this.props.token != this.state.lastToken) {
             console.log(`requesting data with api token ${this.props.token}`)
-            fetch("https://ygs07koo0i.execute-api.us-east-1.amazonaws.com/api/cancellations", {headers: {"Authorization": `Bearer ${this.props.token}`}})
+            fetch("https://api.nerdsletter.net/cancellations", {headers: {"Authorization": `Bearer ${this.props.token}`}})
                 .then(
                     (response) => {
                         if (response.status == 200) {
