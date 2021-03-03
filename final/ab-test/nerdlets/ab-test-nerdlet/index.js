@@ -277,7 +277,7 @@ class VersionAPageViews extends React.Component {
                 {
                     (platformState) => {
                         return <NrqlQuery
-                            accountId={ACCOUNT_ID}
+                            accountId={platformState.accountId}
                             query="SELECT count(*) FROM pageView WHERE page_version = 'a' SINCE 30 MINUTES AGO TIMESERIES"
                             timeRange={platformState.timeRange}
                             pollInterval={60000}
@@ -305,7 +305,7 @@ class VersionBPageViews extends React.Component {
                 {
                     (platformState) => {
                         return <NrqlQuery
-                            accountId={ACCOUNT_ID}
+                            accountId={platformState.accountId}
                             query="SELECT count(*) FROM pageView WHERE page_version = 'b' SINCE 30 MINUTES AGO TIMESERIES"
                             timeRange={platformState.timeRange}
                             pollInterval={60000}
