@@ -1,14 +1,15 @@
 import React from 'react';
 import { AccountStorageMutation, AccountStorageQuery, BlockText, Button, ChartGroup, Grid, GridItem, HeadingText, LineChart, Modal, NerdGraphQuery, NerdGraphMutation, NrqlQuery, PlatformStateContext, PieChart, Select, SelectItem, Spinner, TableChart, TextField, navigation } from 'nr1';
 
-const ACCOUNT_ID = 3014918;
+const ACCOUNT_ID = 1234567  // <YOUR-ACCOUNT-ID>
+const ENTITY_GUID = ""  // <YOUR-ENTITY-GUID>
 const VERSION_A_DESCRIPTION = 'The newsletter signup message says, "Sign up for our newsletter"'
 const VERSION_B_DESCRIPTION = 'The newsletter signup message says, "Sign up for our newsletter and get a free shirt!"'
 
 
 class NewsletterSignups extends React.Component {
     openAPMEntity() {
-        navigation.openStackedEntity("MzAxNDkxOHxBUE18QVBQTElDQVRJT058ODU0OTExNzE5")
+        navigation.openStackedEntity(ENTITY_GUID)
     }
 
     render() {
