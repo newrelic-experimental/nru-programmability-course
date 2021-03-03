@@ -6,25 +6,6 @@ const VERSION_A_DESCRIPTION = 'The newsletter signup message says, "Sign up for 
 const VERSION_B_DESCRIPTION = 'The newsletter signup message says, "Sign up for our newsletter and get a free shirt!"'
 
 
-function getQuery(platformState, baseQuery) {
-    const baseTimeRange = " SINCE 30 MINUTES AGO TIMESERIES"
-    var query = baseQuery + baseTimeRange
-
-    if (platformState.timeRange.begin_time) {
-        const since = new Date(platformState.timeRange.begin_time).toISOString();
-        var until = 'now';
-        if (platformState.timeRange.end_time){
-            until = new Date(platformState.timeRange.end_time).toISOString();
-        }
-        query = `${baseQuery} SINCE '${since}' TIMESERIES UNTIL '${until}'`
-    } else if (platformState.timeRange.duration) {
-        const since = platformState.timeRange.duration/1000/60;
-        query = `${baseQuery} SINCE ${since} MINUTES AGO TIMESERIES`
-    }
-
-    return query
-}
-
 class NewsletterSignups extends React.Component {
     openAPMEntity() {
         navigation.openStackedEntity("MzAxNDkxOHxBUE18QVBQTElDQVRJT058ODU0OTExNzE5")
@@ -50,7 +31,8 @@ class NewsletterSignups extends React.Component {
                         return (
                             <NrqlQuery
                                 accountId={platformState.accountId}
-                                query={getQuery(platformState, "SELECT count(*) FROM subscription FACET page_version")}
+                                query="SELECT count(*) FROM subscription FACET page_version SINCE 30 MINUTES AGO TIMESERIES"
+                                timeRange={platformState.timeRange}
                                 pollInterval={60000}
                             >
                                 {
@@ -296,7 +278,8 @@ class VersionAPageViews extends React.Component {
                     (platformState) => {
                         return <NrqlQuery
                             accountId={ACCOUNT_ID}
-                            query={getQuery(platformState, "SELECT count(*) FROM pageView WHERE page_version = 'a'")}
+                            query="SELECT count(*) FROM pageView WHERE page_version = 'a' SINCE 30 MINUTES AGO TIMESERIES"
+                            timeRange={platformState.timeRange}
                             pollInterval={60000}
                         >
                             {
@@ -323,7 +306,8 @@ class VersionBPageViews extends React.Component {
                     (platformState) => {
                         return <NrqlQuery
                             accountId={ACCOUNT_ID}
-                            query={getQuery(platformState, "SELECT count(*) FROM pageView WHERE page_version = 'b'")}
+                            query="SELECT count(*) FROM pageView WHERE page_version = 'b' SINCE 30 MINUTES AGO TIMESERIES"
+                            timeRange={platformState.timeRange}
                             pollInterval={60000}
                         >
                             {
