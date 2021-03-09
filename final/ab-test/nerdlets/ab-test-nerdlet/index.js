@@ -545,7 +545,7 @@ class ApiTokenPrompt extends React.Component {
     }
 
     render() {
-        return <Modal hidden={this.props.hideTokenPrompt} onClose={() => { }}>
+        return <Modal hidden={this.props.hideTokenPrompt} onClose={this.props.hidePrompt}>
             To see cancellation data, you need to enter an API token for your backend service:
             <form>
                 <TextField label="API token" onChange={this.changeToken} onKeyDown={this.keyPress} invalid={this.state.tokenError ? "Token required" : false} />
@@ -658,33 +658,34 @@ export default class AbTestNerdletNerdlet extends React.Component {
 
     render() {
         return (
-            <Grid className="wrapper">
-                <GridItem columnSpan={12}>
-                    <ApiTokenPrompt
-                        hideTokenPrompt={this.state.hideTokenPrompt}
-                        hidePrompt={this.hidePrompt}
-                        showPrompt={this.showPrompt}
-                        storeToken={this.storeToken}
-                    />
-                </GridItem>
-                <GridItem columnSpan={6}><VersionDescription version="A" description={VERSION_A_DESCRIPTION} /></GridItem>
-                <GridItem columnSpan={6}><VersionDescription version="B" description={VERSION_B_DESCRIPTION} /></GridItem>
-                <GridItem columnSpan={12}><hr /></GridItem>
-                <GridItem columnSpan={12}><NewsletterSignups /></GridItem>
-                <GridItem columnSpan={6}><TotalSubscriptions /></GridItem>
-                <GridItem columnSpan={6}>
-                    <TotalCancellations token={this.state.token} />
-                </GridItem>
-                <GridItem columnSpan={6}><VersionATotals /></GridItem>
-                <GridItem columnSpan={6}><VersionBTotals /></GridItem>
-                <ChartGroup>
-                    <GridItem columnSpan={6}><VersionAPageViews /></GridItem>
-                    <GridItem columnSpan={6}><VersionBPageViews /></GridItem>
-                </ChartGroup>
-                <GridItem columnSpan={12}><EndTestSection /></GridItem>
-                <GridItem columnSpan={12}><PastTests /></GridItem>
-                <GridItem columnSpan={12}><ApiTokenButton showPrompt={this.showPrompt} /></GridItem>
-            </Grid>
+            <React.Fragment>
+                <ApiTokenPrompt
+                    hideTokenPrompt={this.state.hideTokenPrompt}
+                    hidePrompt={this.hidePrompt}
+                    showPrompt={this.showPrompt}
+                    storeToken={this.storeToken}
+                />
+
+                <Grid className="wrapper">
+                    <GridItem columnSpan={6}><VersionDescription version="A" description={VERSION_A_DESCRIPTION} /></GridItem>
+                    <GridItem columnSpan={6}><VersionDescription version="B" description={VERSION_B_DESCRIPTION} /></GridItem>
+                    <GridItem columnSpan={12}><hr /></GridItem>
+                    <GridItem columnSpan={12}><NewsletterSignups /></GridItem>
+                    <GridItem columnSpan={6}><TotalSubscriptions /></GridItem>
+                    <GridItem columnSpan={6}>
+                        <TotalCancellations token={this.state.token} />
+                    </GridItem>
+                    <GridItem columnSpan={6}><VersionATotals /></GridItem>
+                    <GridItem columnSpan={6}><VersionBTotals /></GridItem>
+                    <ChartGroup>
+                        <GridItem columnSpan={6}><VersionAPageViews /></GridItem>
+                        <GridItem columnSpan={6}><VersionBPageViews /></GridItem>
+                    </ChartGroup>
+                    <GridItem columnSpan={12}><EndTestSection /></GridItem>
+                    <GridItem columnSpan={12}><PastTests /></GridItem>
+                    <GridItem columnSpan={12}><ApiTokenButton showPrompt={this.showPrompt} /></GridItem>
+                </Grid>
+            </React.Fragment>
         )
     }
 }
