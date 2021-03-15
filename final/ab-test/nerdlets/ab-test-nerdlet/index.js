@@ -76,32 +76,39 @@ class TotalCancellations extends React.Component {
         super(...arguments);
 
         this.state = {
-            cancellations: [
-                {
-                    metadata: {
-                        id: 'cancellations-A',
-                        name: 'Version A',
-                        viz: 'main',
-                        color: 'blue',
-                    },
-                    data: [
-                        { y: 0 },
-                    ],
-                },
-                {
-                    metadata: {
-                        id: 'cancellations-B',
-                        name: 'Version B',
-                        viz: 'main',
-                        color: 'green',
-                    },
-                    data: [
-                        { y: 0 },
-                    ],
-                },
-            ],
+            cancellations: [],
             lastToken: null
         }
+    }
+
+    generateChartData(data) {
+        const cancellationsA = data ? data.a : 0;
+        c74onst cancellationsB = data ? data.b : 0;
+
+        return [
+            {
+                metadata: {
+                    id: 'cancellations-A',
+                    name: 'Version A',
+                    viz: 'main',
+                    color: 'blue',
+                },
+                data: [
+                    { y: cancellationsA },
+                ],
+            },
+            {
+                metadata: {
+                    id: 'cancellations-B',
+                    name: 'Version B',
+                    viz: 'main',
+                    color: 'green',
+                },
+                data: [
+                    { y: cancellationsB },
+                ],
+            },
+        ]
     }
 
     componentDidUpdate() {
@@ -122,24 +129,19 @@ class TotalCancellations extends React.Component {
                 .then(
                     (data) => {
                         if (data) {
-                            let cancellations = this.state.cancellations.slice()
-                            cancellations[0].data[0].y = data.a
-                            cancellations[1].data[0].y = data.b
-                            this.setState({ cancellations: cancellations, lastToken: this.props.token })
+                            this.setState({ cancellations: this.generateChartData(data), lastToken: this.props.token })
                         }
                     }
                 )
-
         }
     }
-
     render() {
-        return <React.Fragment>
+        return <div>
             <HeadingText className="chartHeader">
                 Total cancellations per version
             </HeadingText>
             <PieChart data={this.state.cancellations} fullWidth />
-        </React.Fragment>
+        </div>
     }
 }
 
