@@ -1,4 +1,5 @@
 import React from 'react';
+import EndTestSection from './end-test';
 import NewsletterSignups from './newsletter-signups';
 import PastTests from './past-tests';
 import TotalCancellations from './total-cancellations';
@@ -7,7 +8,6 @@ import VersionDescription from './description';
 import VersionPageViews from './page-views';
 import VersionTotals from './totals';
 import { ApiTokenButton, ApiTokenPrompt } from './token-prompt';
-import { EndTestButton, EndTestSection, VersionSelector } from './end-test';
 import {
     Grid,
     GridItem,

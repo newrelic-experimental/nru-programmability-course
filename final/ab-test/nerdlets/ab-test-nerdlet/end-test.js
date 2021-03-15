@@ -50,7 +50,8 @@ class EndTestButton extends React.Component {
         const dd = String(today.getDate()).padStart(2, '0');
         const mm = String(today.getMonth() + 1).padStart(2, '0');
         const yyyy = today.getFullYear();
-        const endDate = `${mm}/${dd}/${yyyy}`
+        const endDate = `${mm}-${dd}-${yyyy}`
+
         AccountStorageMutation.mutate(
             {
                 accountId: this.props.accountId,
@@ -64,6 +65,7 @@ class EndTestButton extends React.Component {
                 }
             }
         )
+
         this.closeModal();
     }
 
@@ -88,7 +90,7 @@ class EndTestButton extends React.Component {
     }
 }
 
-class EndTestSection extends React.Component {
+export default class EndTestSection extends React.Component {
     constructor() {
         super(...arguments);
 
@@ -129,5 +131,3 @@ class EndTestSection extends React.Component {
         </Grid>
     }
 }
-
-export { EndTestButton, EndTestSection, VersionSelector }
