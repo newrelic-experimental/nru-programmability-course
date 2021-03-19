@@ -1,0 +1,36 @@
+.wrapper {
+    width: 75%;
+    margin: auto;
+}
+.chartHeader {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.endTestSection{
+    margin: auto;
+    background-color: #fafafa;
+    padding: 20px;
+}
+.endTestHeader{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.versionSelector {
+    text-align: right;
+    padding-top: 5px;
+}
+.versionHeader {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.versionText {
+    margin-bottom: 20px;
+}
+.errorText {
+    color: red;
+}
+

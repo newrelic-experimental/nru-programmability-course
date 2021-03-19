@@ -1,0 +1,17 @@
+{
+  "tagline": "Win @ newsletter subscriptions",
+  "details": "Display test data for our newsletter subscription A/B test",
+  "repository": "https://github.com/newrelic-experimental/nru-programmability-course",
+  "whatsNew": "Initial release! Includes:\n- A variety of charts for understanding the test results\n- An end test button for storing some test data in a table",
+  "support": {
+    "email": {
+      "address": ""
+    },
+    "issues": {
+      "url": ""
+    },
+    "community": {
+      "url": ""
+    }
+  }
+}

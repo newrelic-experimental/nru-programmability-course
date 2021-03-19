@@ -21,7 +21,7 @@ export default class VersionPageViews extends React.Component {
                     (platformState) => {
                         return <NrqlQuery
                             accountId={platformState.accountId}
-                            query={`SELECT count(*) FROM pageView WHERE page_version = '${this.props.version}' TIMESERIES`}
+                            query={`SELECT count(*) FROM pageView WHERE page_version = '${this.props.version}' SINCE 30 MINUTES AGO TIMESERIES`}
                             timeRange={platformState.timeRange}
                             pollInterval={60000}
                         >

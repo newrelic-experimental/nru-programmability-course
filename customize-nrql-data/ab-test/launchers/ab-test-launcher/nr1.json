@@ -1,0 +1,7 @@
+{
+    "schemaType": "LAUNCHER",
+    "id": "ab-test-launcher",
+    "displayName": "AbTestLauncher",
+    "description": "Describe me",
+    "rootNerdletId": "ab-test-nerdlet"
+}

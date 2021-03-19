@@ -73,6 +73,7 @@ export default class TotalCancellations extends React.Component {
             )
         }
     }
+
     render() {
         return <div>
             <HeadingText className="chartHeader">
