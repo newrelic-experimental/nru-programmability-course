@@ -1,0 +1,47 @@
+#layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#signup {
+  border: solid;
+  border-width: 0.1rem;
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.5rem;
+  width: 30rem;
+  background-color: rgb(221, 225, 230, 0.2); /* very very light grey */
+}
+
+.subscribe-inputs {
+  border-radius: 0px;
+  border-width: 0.1rem;
+  padding: 0.4rem;
+  margin-top: 1rem;
+}
+
+.subscribe-form {
+  width: 80%;
+  flex-direction: row;
+  justify-content: center;
+  display: flex;
+  padding: 0.5rem;
+}
+
+input.subscribe-inputs {
+  flex-grow: 1;
+}
+
+
+button.subscribe-inputs {
+  background-color: rgb(166, 222, 175); /* light mint green */
+  width: 5rem;
+  margin-left: 0.5rem;
+}
+

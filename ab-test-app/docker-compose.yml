@@ -1,0 +1,24 @@
+version: '3'
+services:
+  simulator:
+    image: ghcr.io/newrelic/demo-simulator
+    environment:
+      - START_SCENARIO=/mnt/simulator/web_traffic_scenario.json
+      - SELENIUM_REMOTE_URL=http://web_driver:4444/wd/hub
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./web_traffic_scenario.json:/mnt/simulator/web_traffic_scenario.json
+  web_driver:
+    image: selenium/standalone-chrome:4.0.0-beta-3-prerelease-20210321
+    ports:
+      - "4444:4444"
+    volumes:
+      - /dev/shm:/dev/shm
+  ab_tester:
+    build: .
+    environment:
+      - NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}
+      - NEW_RELIC_APP_NAME=Newsletter
+    ports:
+      - "3001:3001"

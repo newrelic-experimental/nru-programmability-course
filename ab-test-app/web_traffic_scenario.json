@@ -1,0 +1,114 @@
+[
+    {
+        "id": "viewingVariation",
+        "rpm": 1,
+        "steps": [
+            {
+                "name": "httpGet",
+                "params": [
+                    "http://localhost:5000/api/scenario/viewingTraffic/start?rpm=25"
+                ]
+            },
+            {
+                "name": "sleepMs",
+                "params": [
+                    30000
+                ]
+            },
+            {
+                "name": "httpGet",
+                "params": [
+                    "http://localhost:5000/api/scenario/viewingTraffic/start?rpm=5"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "subscriptionVariation",
+        "rpm": 1,
+        "steps": [
+            {
+                "name": "httpGet",
+                "params": [
+                    "http://localhost:5000/api/scenario/subscriptionTraffic/start?rpm=20"
+                ]
+            },
+            {
+                "name": "sleepMs",
+                "params": [
+                    20000
+                ]
+            },
+            {
+                "name": "httpGet",
+                "params": [
+                    "http://localhost:5000/api/scenario/viewingTraffic/start?rpm=4"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "unsubscriptionTraffic",
+        "rpm": 5,
+        "steps": [
+            {
+                "name": "httpPostJson",
+                "params": [
+                    "http://ab_tester:3001/unsubscribe",
+                    {
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "subscriptionTraffic",
+        "rpm": 10,
+        "steps": [
+            {
+                "name": "browserStart",
+                "params": []
+            },
+            {
+                "name": "browserGoto",
+                "params": [
+                    "http://ab_tester:3001"
+                ]
+            },
+            {
+                "name": "browserClick",
+                "params": [
+                    "#subscribeBtn"
+                ]
+            },
+            {
+                "name": "sleepMs",
+                "params": [
+                    1000
+                ]
+            }
+        ]
+    },
+    {
+        "id": "viewingTraffic",
+        "rpm": 15,
+        "steps": [
+            {
+                "name": "browserStart",
+                "params": []
+            },
+            {
+                "name": "browserGoto",
+                "params": [
+                    "http://ab_tester:3001"
+                ]
+            },
+            {
+                "name": "sleepMs",
+                "params": [
+                    1000
+                ]
+            }
+        ]
+    }
+]
