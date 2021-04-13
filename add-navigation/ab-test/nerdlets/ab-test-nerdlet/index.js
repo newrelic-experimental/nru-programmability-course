@@ -16,7 +16,7 @@ import VersionPageViews from './page-views';
 import VersionTotals from './totals';
 import { ApiTokenButton, ApiTokenPrompt } from './token-prompt';
 
-const ACCOUNT_ID = 3014918  // <YOUR-ACCOUNT-ID>
+const ACCOUNT_ID = 1234567  // <YOUR NEW RELIC ACCOUNT ID>
 const VERSION_A_DESCRIPTION = 'The newsletter signup message says, "Sign up for our newsletter"'
 const VERSION_B_DESCRIPTION = 'The newsletter signup message says, "Sign up for our newsletter and get a free shirt!"'
 

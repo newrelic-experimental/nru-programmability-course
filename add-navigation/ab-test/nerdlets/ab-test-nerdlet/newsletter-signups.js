@@ -6,6 +6,8 @@ import {
     PlatformStateContext,
 } from 'nr1';
 
+const ACCOUNT_ID = 1234567  // <YOUR NEW RELIC ACCOUNT ID>
+
 export default class NewsletterSignups extends React.Component {
     render() {
         return <div>
@@ -16,7 +18,7 @@ export default class NewsletterSignups extends React.Component {
                 {
                     (platformState) => {
                         return <NrqlQuery
-                            accountId={platformState.accountId}
+                            accountId={ACCOUNT_ID}
                             query="SELECT count(*) FROM subscription FACET page_version TIMESERIES"
                             timeRange={platformState.timeRange}
                             pollInterval={60000}

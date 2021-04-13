@@ -5,7 +5,7 @@ import {
     NrqlQuery,
 } from 'nr1';
 
-const ACCOUNT_ID = 3014918
+const ACCOUNT_ID = 1234567  // <YOUR NEW RELIC ACCOUNT ID>
 
 export default class NewsletterSignups extends React.Component {
     render() {

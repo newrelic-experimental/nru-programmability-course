@@ -6,7 +6,7 @@ import {
     PlatformStateContext,
 } from 'nr1';
 
-const ACCOUNT_ID = 3014918
+const ACCOUNT_ID = 1234567  // <YOUR NEW RELIC ACCOUNT ID>
 
 export default class VersionPageViews extends React.Component {
     render() {
@@ -18,7 +18,7 @@ export default class VersionPageViews extends React.Component {
                 {
                     (platformState) => {
                         return <NrqlQuery
-                            accountId={platformState.accountId}
+                            accountId={ACCOUNT_ID}
                             query={`SELECT count(*) FROM pageView WHERE page_version = '${this.props.version}' TIMESERIES`}
                             timeRange={platformState.timeRange}
                             pollInterval={60000}
