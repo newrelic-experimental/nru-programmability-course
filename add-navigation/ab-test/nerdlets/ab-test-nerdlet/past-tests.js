@@ -36,15 +36,14 @@ export default class PastTests extends React.Component {
                     }
                     data.forEach(
                         function (currentValue, index) {
-                            this[index] = {
+                            historicalData.data.push({
                                 endDate: currentValue.id,
                                 versionADescription: currentValue.document.versionADescription,
                                 versionBDescription: currentValue.document.versionBDescription,
                                 winner: currentValue.document.winner,
-                            }
+                            })
                         }, data
                     )
-                    historicalData.data = data
                     return <TableChart data={[historicalData]} fullWidth />
                 }}
             </AccountStorageQuery>
