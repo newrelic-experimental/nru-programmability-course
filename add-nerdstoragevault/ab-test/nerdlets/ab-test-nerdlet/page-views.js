@@ -14,7 +14,7 @@ export default class VersionPageViews extends React.Component {
                 Version {this.props.version.toUpperCase()} - Page views
             </HeadingText>
             <NrqlQuery
-                accountId={ACCOUNT_ID}
+                accountIds={ACCOUNT_ID}
                 query={`SELECT count(*) FROM pageView WHERE page_version = '${this.props.version}' SINCE 30 MINUTES AGO TIMESERIES`}
                 pollInterval={60000}
             >

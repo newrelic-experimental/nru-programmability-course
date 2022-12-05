@@ -32,7 +32,7 @@ export default class VersionTotals extends React.Component {
 
     componentDidMount() {
         NrqlQuery.query({
-            accountId: this.props.accountId,
+            accountIds: this.props.accountIds,
             query: `SELECT count(*) FROM subscription WHERE page_version = '${this.props.version}' SINCE 7 DAYS AGO`,
             formatType: NrqlQuery.FORMAT_TYPE.RAW
         }).then(({ data }) => {
@@ -44,7 +44,7 @@ export default class VersionTotals extends React.Component {
         })
 
         NrqlQuery.query({
-            accountId: this.props.accountId,
+            accountIds: this.props.accountIds,
             query: `SELECT count(*) FROM pageView WHERE page_version = '${this.props.version}' SINCE 7 DAYS AGO`,
             formatType: NrqlQuery.FORMAT_TYPE.RAW
         }).then(({ data }) => {

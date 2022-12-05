@@ -36,7 +36,7 @@ export default class NewsletterSignups extends React.Component {
                 {
                     (platformState) => {
                         return <NrqlQuery
-                            accountId={ACCOUNT_ID}
+                            accountIds={ACCOUNT_ID}
                             query="SELECT count(*) FROM subscription FACET page_version TIMESERIES"
                             timeRange={platformState.timeRange}
                             pollInterval={60000}

@@ -14,7 +14,7 @@ export default class TotalSubscriptions extends React.Component {
                 Total subscriptions per version
             </HeadingText>
             <NrqlQuery
-                accountId={ACCOUNT_ID}
+                accountIds={ACCOUNT_ID}
                 query="SELECT count(*) FROM subscription FACET page_version SINCE 7 DAYS AGO"
                 pollInterval={60000}
             >
