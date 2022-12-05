@@ -25,7 +25,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "log": "^6.0.0",
     "log-node": "^7.0.0",
     "newrelic": "^7.1.1",
