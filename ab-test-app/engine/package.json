@@ -28,7 +28,7 @@
     "express": "^4.17.1",
     "log": "^6.0.0",
     "log-node": "^7.0.0",
-    "newrelic": "^7.1.1",
+    "newrelic": "^10.3.1",
     "node-cache": "^5.1.2",
     "stringify-object": "^3.3.0",
     "uuid": "^8.3.2",
